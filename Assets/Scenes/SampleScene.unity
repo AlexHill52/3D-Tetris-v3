@@ -859,14 +859,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f68d95b3072983438f0b1d9b77402ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridSizeX: 5
+  gridSizeY: 8
+  gridSizeZ: 5
+  pieceList:
+  - {fileID: 6009296464119771527, guid: dcef43845cdb53f43aefa82c6b7c3e8d, type: 3}
+  - {fileID: 773246589243393815, guid: 64f17db0e3862a74e97f1458e72e1813, type: 3}
+  - {fileID: 8335807947716309457, guid: 2f3b1b1e51a16514dbd0900a101321ab, type: 3}
+  - {fileID: 1650879117556585069, guid: 3a70a55032f70e24480091fd534f696d, type: 3}
+  - {fileID: 6205332740958270054, guid: 82d4e7c1c2b7e9947834421656be8f01, type: 3}
+  - {fileID: 6973369010961164673, guid: cbea486242a3e0b48ad14e099b9af7ff, type: 3}
+  - {fileID: 3447002227265017928, guid: 55a60fc6df6abcd4eb17bb972fca2f1d, type: 3}
   bottomPlane: {fileID: 217311797}
   N: {fileID: 1690915717}
   S: {fileID: 1475998482}
   E: {fileID: 1213651502}
   W: {fileID: 2010002741}
-  gridSizeX: 5
-  gridSizeY: 8
-  gridSizeZ: 5
 --- !u!1 &865605613
 GameObject:
   m_ObjectHideFlags: 0

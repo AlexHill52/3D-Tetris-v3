@@ -2,12 +2,93 @@ using UnityEngine;
 
 public class Playfield : MonoBehaviour
 {
+    public static Playfield instance;
+    public int gridSizeX, gridSizeY, gridSizeZ;
+
+    [Header("Pieces")]
+    public GameObject[] pieceList;
+
+    [Header("Playfield Visuals")]
     public GameObject bottomPlane;
     public GameObject N, S, E, W;
-
-    public int gridSizeX, gridSizeY, gridSizeZ;
     public Transform[,,] theGrid;
 
+    void Awake()
+    {
+        instance = this;
+    }
+
+    void Start()
+    {
+        theGrid = new Transform[gridSizeX,gridSizeY,gridSizeZ];
+    }
+
+    public Vector3 Round(Vector3 myVector)
+    {
+        return new Vector3(Mathf.RoundToInt(myVector.x),
+                            Mathf.RoundToInt(myVector.y),
+                            Mathf.RoundToInt(myVector.z));
+    }
+
+    public bool CheckInsidePlayfield(Vector3 position)
+    {
+        return ((int)position.x >= 0 && (int) position.x < gridSizeX &&
+                (int)position.y >= 0 &&
+                (int)position.z >= 0 && (int) position.z < gridSizeZ);
+    }
+
+    public void UpdatePlayfield(TetrisPiece myPiece)
+    {
+        //delete possible parent objects
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int z = 0; z < gridSizeZ; z++)
+            {
+                for (int y = 0; y < gridSizeY; y++)
+                {
+                    if(theGrid[x,y,z] != null)
+                    {
+                        if(theGrid[x,y,z].parent == myPiece.transform)
+                        {
+                            theGrid[x,y,z] = null;
+                        }
+                    }                    
+                }
+            }
+        }
+        //fill in child objects
+        foreach(Transform child in myPiece.transform)
+        {
+            Vector3 pos = Round(child.position);
+            if(pos.y < gridSizeY)
+            {
+                theGrid[(int)pos.x, (int)pos.y, (int)pos.z] = child;
+            }
+        }
+    }
+
+    public Transform GetTransformOnGridPos(Vector3 pos)
+    {
+        if(pos.y > gridSizeY - 1)
+        {
+            return null;
+        }
+        else
+        {
+            return theGrid[(int)pos.x, (int)pos.y, (int)pos.z];
+        }
+    }
+    
+    public void SpawnNewBlock()
+    {
+        Vector3 spawnPoint = new Vector3((int)(transform.position.x + (float)gridSizeX / 2),
+                                            (int)(transform.position.y + gridSizeY),
+                                            (int)(transform.position.z + (float)gridSizeZ / 2));
+        int randomIndex = Random.Range(0, pieceList.Length);
+        
+        GameObject newPiece = Instantiate(pieceList[randomIndex], spawnPoint, Quaternion.identity) as GameObject;
+    }
+    
     void OnDrawGizmos()
     {
         if(bottomPlane != null)
