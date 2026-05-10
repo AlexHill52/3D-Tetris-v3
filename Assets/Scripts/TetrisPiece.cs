@@ -35,38 +35,44 @@ public class TetrisPiece : MonoBehaviour
             prevTime = Time.time;
         }
 
+        //right joystick (?)
+        Vector2 rightHandInput = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
+
         //Movement inputs
-        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        if (Input.GetKeyDown(KeyCode.LeftArrow) || rightHandInput.x < -0.8f)
         {
             SetMoveInput(Vector3.left);
         }
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow) || rightHandInput.x > 0.8f)
         {
             SetMoveInput(Vector3.right);
         }
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow) || rightHandInput.y > 0.8f)
         {
             SetMoveInput(Vector3.forward);
         }
-        if (Input.GetKeyDown(KeyCode.DownArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow) || rightHandInput.y < -0.8f)
         {
             SetMoveInput(Vector3.back);
         }
 
+        //left joystick (?)
+        Vector2 leftHandInput = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
+
         //Rotation inputs
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) || leftHandInput.x < -0.8f)
         {
             SetRotationInput(new Vector3(0,0,90));
         }
-        if (Input.GetKeyDown(KeyCode.D))
+        if (Input.GetKeyDown(KeyCode.D) || leftHandInput.x > 0.8f)
         {
             SetRotationInput(new Vector3(0,0,-90));
         }
-        if (Input.GetKeyDown(KeyCode.W))
+        if (Input.GetKeyDown(KeyCode.W) || leftHandInput.y > 0.8f)
         {
             SetRotationInput(new Vector3(90,0,0));
         }
-        if (Input.GetKeyDown(KeyCode.S))
+        if (Input.GetKeyDown(KeyCode.S) || leftHandInput.y < -0.8f)
         {
             SetRotationInput(new Vector3(-90,0,0));
         }
