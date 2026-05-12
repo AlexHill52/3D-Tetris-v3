@@ -21,6 +21,7 @@ public class Playfield : MonoBehaviour
     void Start()
     {
         theGrid = new Transform[gridSizeX,gridSizeY,gridSizeZ];
+        SpawnNewBlock();
     }
 
     public Vector3 Round(Vector3 myVector)
@@ -89,6 +90,63 @@ public class Playfield : MonoBehaviour
         GameObject newPiece = Instantiate(pieceList[randomIndex], spawnPoint, Quaternion.identity) as GameObject;
     }
     
+    public void DeleteLayer()
+    {
+        for (int y = gridSizeY-1; y >= 0; y--)
+        {
+            if (CheckFullLayer(y))
+            {
+                DeleteLayerAt(y);
+                MoveLayersDown(y);
+            }
+        }
+    }
+
+    bool CheckFullLayer(int y)
+    {
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int z = 0; z < gridSizeZ; z++)
+            {
+                if(theGrid[x,y,z] == null)
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    void DeleteLayerAt(int y)
+    {
+        for (int x = 0; x < gridSizeX; x++)
+        {
+            for (int z = 0; z < gridSizeZ; z++)
+            {
+                Destroy(theGrid[x,y,z].gameObject);
+                theGrid[x,y,z] = null;
+            }
+        }
+    }
+
+    void MoveLayersDown(int y)
+    {
+        for (int i = y; i < gridSizeY; i++)
+        {
+            for (int x = 0; x < gridSizeX; x++)
+            {
+                for (int z = 0; z < gridSizeZ; z++)
+                {
+                    if (theGrid[x,i,z] != null)
+                    {
+                        theGrid[x,i-1,z] = theGrid[x,i,z];
+                        theGrid[x,i,z] = null;
+                        theGrid[x,i-1,z].position += Vector3.down;
+                    }
+                }
+            }
+        }
+    }
     void OnDrawGizmos()
     {
         if(bottomPlane != null)

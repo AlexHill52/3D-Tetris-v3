@@ -21,6 +21,7 @@ public class TetrisPiece : MonoBehaviour
             {
                 transform.position += Vector3.up;
                 //check to delete layer
+                Playfield.instance.DeleteLayer();
 
                 enabled = false;
                 //make a new piece
@@ -35,7 +36,7 @@ public class TetrisPiece : MonoBehaviour
             prevTime = Time.time;
         }
 
-        //right joystick (?)
+        //right joystick
         Vector2 rightHandInput = OVRInput.Get(OVRInput.Axis2D.SecondaryThumbstick);
 
         //Movement inputs
@@ -56,7 +57,7 @@ public class TetrisPiece : MonoBehaviour
             SetMoveInput(Vector3.back);
         }
 
-        //left joystick (?)
+        //left joystick
         Vector2 leftHandInput = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
 
         //Rotation inputs
@@ -75,6 +76,12 @@ public class TetrisPiece : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.S) || leftHandInput.y < -0.8f)
         {
             SetRotationInput(new Vector3(-90,0,0));
+        }
+
+        //Hard-drop input
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            fallTime = 0.01f;
         }
     }
 
@@ -104,6 +111,7 @@ public class TetrisPiece : MonoBehaviour
         }
     }
     
+
     bool CheckValidMove()
     {
         foreach (Transform child in transform)
